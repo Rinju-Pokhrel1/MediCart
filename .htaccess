@@ -1,0 +1,4 @@
+# Apache HTTPS redirect (enable only after configuring a local SSL virtual host)
+RewriteEngine On
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
