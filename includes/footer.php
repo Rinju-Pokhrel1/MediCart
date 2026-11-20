@@ -1,1 +1,1 @@
-</main><footer>© <?= date('Y') ?> MediCart · Student E-Commerce Lab Project</footer></body></html>
+</main><footer>© <?= date('Y') ?> MediCart</footer></body></html>

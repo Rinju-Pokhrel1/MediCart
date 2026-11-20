@@ -1,6 +1,5 @@
 <?php
 require_once 'config.php';
-$pdo->exec("INSERT INTO page_views(page) VALUES('catalog')");
 $q = trim($_GET['q'] ?? ''); $category = (int)($_GET['category'] ?? 0);
 $sql = "SELECT p.*, c.name AS category FROM products p JOIN categories c ON c.id=p.category_id WHERE (p.name LIKE :q OR p.description LIKE :q)";
 $params = [':q'=>'%'.$q.'%'];

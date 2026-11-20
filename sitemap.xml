@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
- <url><loc>http://localhost:8000/index.php</loc></url>
- <url><loc>http://localhost:8000/newsletter.php</loc></url>
- <url><loc>http://localhost:8000/login.php</loc></url>
- <url><loc>http://localhost:8000/register.php</loc></url>
+    <url>
+        <loc>https://localhost:8443/</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=1</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=2</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=3</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=4</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=5</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=6</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=7</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=8</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=9</loc>
+    </url>
+    <url>
+        <loc>https://localhost:8443/product.php?id=10</loc>
+    </url>
+
 </urlset>

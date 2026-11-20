@@ -1,3 +1,11 @@
 User-agent: *
 Allow: /
-Sitemap: http://localhost:8000/sitemap.xml
+Disallow: /admin.php
+Disallow: /cart.php
+Disallow: /checkout.php
+Disallow: /login.php
+Disallow: /register.php
+Disallow: /payment.php
+Disallow: /logout.php
+
+Sitemap: https://localhost:8443/sitemap.xml

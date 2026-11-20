@@ -65,6 +65,12 @@ $products = $pdo->query('SELECT p.*,c.name category FROM products p JOIN categor
 $orders = $pdo->query('SELECT o.*,u.name customer,u.email FROM orders o JOIN users u ON u.id=o.user_id ORDER BY o.created_at DESC LIMIT 30')->fetchAll();
 $customers = $pdo->query("SELECT u.id,u.name,u.email,u.created_at,COUNT(o.id) order_count,COALESCE(SUM(CASE WHEN o.payment_status='paid' THEN o.total ELSE 0 END),0) spent FROM users u LEFT JOIN orders o ON o.user_id=u.id WHERE u.role='customer' GROUP BY u.id ORDER BY u.created_at DESC")->fetchAll();
 $views=(int)$pdo->query('SELECT COUNT(*) FROM page_views')->fetchColumn();
+$pageStats = $pdo->query(
+    'SELECT page, COUNT(*) AS visits
+     FROM page_views
+     GROUP BY page
+     ORDER BY visits DESC'
+)->fetchAll(PDO::FETCH_ASSOC);
 $subscribers=(int)$pdo->query('SELECT COUNT(*) FROM newsletter_subscribers')->fetchColumn();
 $orderCount=(int)$pdo->query('SELECT COUNT(*) FROM orders')->fetchColumn();
 $revenue=(float)$pdo->query("SELECT COALESCE(SUM(total),0) FROM orders WHERE payment_status='paid'")->fetchColumn();
@@ -116,5 +122,46 @@ require 'includes/header.php';
 <?php foreach($orders as $o): ?><tr><td>#<?= $o['id'] ?><br><small><?= e($o['created_at']) ?></small></td><td><?= e($o['customer']) ?><br><small><?= e($o['email']) ?></small></td><td><?= money((float)$o['total']) ?></td><td><?= e($o['payment_status']) ?></td><td><?= e($o['status']) ?></td><td><form method="post" class="inline-form"><input type="hidden" name="action" value="update_order"><input type="hidden" name="order_id" value="<?= $o['id'] ?>"><select name="status"><?php foreach($allowedStatuses as $st): ?><option <?= $o['status']===$st?'selected':'' ?> value="<?= $st ?>"><?= ucfirst($st) ?></option><?php endforeach; ?></select><button>Update</button></form></td></tr><?php endforeach; ?>
 </tbody></table></div></div>
 <div class="admin-section"><div class="section-title"><div><span class="eyebrow">CUSTOMERS</span><h2>Customer directory</h2><p>Understand your customer activity.</p></div><span class="section-symbol">♙</span></div><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Orders</th><th>Paid total</th><th>Joined</th></tr></thead><tbody><?php foreach($customers as $customer): ?><tr><td><?= e($customer['name']) ?></td><td><?= e($customer['email']) ?></td><td><?= (int)$customer['order_count'] ?></td><td><?= money((float)$customer['spent']) ?></td><td><?= e($customer['created_at']) ?></td></tr><?php endforeach; ?></tbody></table></div></div>
-<div class="admin-section"><div class="section-title"><div><span class="eyebrow">INSIGHTS</span><h2>Store activity</h2><p>Simple engagement metrics from your lab project.</p></div><span class="section-symbol">⌁</span></div><p>Page views: <strong><?= $views ?></strong> · Newsletter subscribers: <strong><?= $subscribers ?></strong></p></div>
+<div class="admin-section">
+    <div class="section-title">
+        <div>
+            <span class="eyebrow">INSIGHTS</span>
+            <h2>Store activity</h2>
+            <p>Simple engagement metrics from your lab project.</p>
+        </div>
+        <span class="section-symbol">⌁</span>
+    </div>
+
+    <p>
+        Total page views: <strong><?= $views ?></strong>
+        · Newsletter subscribers: <strong><?= $subscribers ?></strong>
+    </p>
+
+    <h3>Traffic by page</h3>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Page</th>
+                    <th>Total Visits</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($pageStats as $stat): ?>
+                    <tr>
+                        <td><?= e(ucwords(str_replace('-', ' ', $stat['page']))) ?></td>
+                        <td><?= (int)$stat['visits'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+
+                <?php if (empty($pageStats)): ?>
+                    <tr>
+                        <td colspan="2">No traffic data available yet.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 <?php require 'includes/footer.php'; ?>
